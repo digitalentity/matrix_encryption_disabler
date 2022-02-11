@@ -11,11 +11,11 @@ logger = logging.getLogger(__name__)
 #     - deny_encryption_for_users_of: if the event sender is on the server in the list (i.e. @user:example.org)
 #     - deny_encryption_for_rooms_of: if the room is on the server in the list (i.e. #room:example.org)
 
-# third_party_event_rules:
-#   module: "matrix_e2ee_filter.EncryptedRoomFilter"
-#   config:
-#     deny_encryption_for_users_of: ['example.org']
-#     deny_encryption_for_rooms_of: ['example.org']
+# modules:
+#   - module: "matrix_e2ee_filter.EncryptedRoomFilter"
+#     config:
+#       deny_encryption_for_users_of: ['example.org']
+#       deny_encryption_for_rooms_of: ['example.org']
 
 # You may also want to add the following to your logging config to debug the plugin:
 
@@ -26,8 +26,8 @@ logger = logging.getLogger(__name__)
 
 class EncryptedRoomFilter:
 
-    def __init__(self, config: dict, module_api: module_api):
-        self.api = module_api
+    def __init__(self, config: dict, api: module_api):
+        self.api = api
         self.deny_user_servers = config.get("deny_encryption_for_users_of", [])
         self.deny_room_servers = config.get("deny_encryption_for_rooms_of", [])
         self.api.register_third_party_rules_callbacks(on_create_room = self.on_create_room,)

@@ -20,11 +20,11 @@ In addition the plugin will filter out events for enabling encryption on room ba
 In your `homeserver.yaml`:
 
 ```
-third_party_event_rules:
-  module: "matrix_e2ee_filter.EncryptedRoomFilter"
-  config:
-    deny_encryption_for_users_of: ['example.org']
-    deny_encryption_for_rooms_of: ['example.org']
+modules:
+ - module: "matrix_e2ee_filter.EncryptedRoomFilter"
+   config:
+     deny_encryption_for_users_of: ['example.org']
+     deny_encryption_for_rooms_of: ['example.org']
 ```
 
 You may also want to add the following to your logging config to debug the plugin:
