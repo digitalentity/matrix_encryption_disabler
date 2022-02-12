@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 #   Plugin will strip away encryption from newly created rooms.
 #   In addition the plugin will filter out events for enabling encryption on room based on the server:
 #     - deny_encryption_for_users_of: if the event sender is on the server in the list (i.e. @user:example.org)
-#     - deny_encryption_for_rooms_of: if the room is on the server in the list (i.e. #room:example.org)
+#     - deny_encryption_for_rooms_of: if the room is on the server in the list (i.e. !room:example.org)
 
 # modules:
 #   - module: "matrix_e2ee_filter.EncryptedRoomFilter"

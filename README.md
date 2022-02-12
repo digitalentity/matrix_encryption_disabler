@@ -15,7 +15,7 @@ Once this feature is implemented on Synapse side (https://github.com/matrix-org/
 Plugin will strip away encryption from newly created rooms.
 In addition the plugin will filter out events for enabling encryption on room based on the server:
   - deny_encryption_for_users_of: if the event sender is on the server in the list (i.e. @user:example.org)
-  - deny_encryption_for_rooms_of: if the room is on the server in the list (i.e. #room:example.org)
+  - deny_encryption_for_rooms_of: if the room is on the server in the list (i.e. !room:example.org)
 
 In your `homeserver.yaml`:
 
