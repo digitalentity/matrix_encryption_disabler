@@ -1,8 +1,8 @@
 ### E2EE disabling plugin for Synapse
 
-This [Pluggable Module](https://matrix-org.github.io/synapse/latest/modules/index.html) disables end-to-end encryption in a self-hosted Synapse servers. It works by stripping out requests for encryption from newly created rooms and filtering out events for enabling E2EE on already existing rooms if a user or a room belongs to a configured list of servers.
+This [Pluggable Module](https://matrix-org.github.io/synapse/latest/modules/index.html) disables end-to-end encryption in a self-hosted Synapse servers. It works by stripping out requests for encryption from newly created rooms, patching power levels to prevent users from enabling encryption and additionally filtering out events for enabling E2EE on already existing rooms if a user or a room belongs to a configured list of servers.
 
-It should not affect federated servers, but that's not tested.
+This logic will work also on federated servers as long as they verify and enforce power levels.
 
 Possible use-cases:
  * A legal requirement to provide auditable chat logs
@@ -34,3 +34,7 @@ loggers:
     matrix_e2ee_filter:
         level: INFO
 ```
+
+### Caveats
+
+This is not bullet-proof, a federated server that doesn't respect power levels may still allow users to enable encryption which will allow 3p users on other servers belonging to federation to freely use e2ee. This will create a divergence in room state and users on the server where this plugin is enabled won't be able to read encrypted messages - from their point of view the room will still be unencrypted.
