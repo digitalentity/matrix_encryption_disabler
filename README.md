@@ -13,6 +13,11 @@ Once this feature is implemented on Synapse side (https://github.com/matrix-org/
 ### Example config:
 
 Plugin will strip away encryption from newly created rooms.
+
+If `patch_power_levels` option is set to `True` the plugin will additionally patch the `m.room.power_levels` event 
+and set the required power level for enabling encryption to 150 which is higher than the room creator level (100), 
+effectively preventing anybody (locally or over federation) from enabling encryption for the lifetime of rooms created this way (irreversible).
+
 In addition the plugin will filter out events for enabling encryption on room based on the server:
   - deny_encryption_for_users_of: if the event sender is on the server in the list (i.e. @user:example.org)
   - deny_encryption_for_rooms_of: if the room is on the server in the list (i.e. !room:example.org)
@@ -37,4 +42,6 @@ loggers:
 
 ### Caveats
 
-This is not bullet-proof, a federated server that doesn't respect power levels may still allow users to enable encryption which will allow 3p users on other servers belonging to federation to freely use e2ee. This will create a divergence in room state and users on the server where this plugin is enabled won't be able to read encrypted messages - from their point of view the room will still be unencrypted.
+* This is not bullet-proof, a federated server that doesn't respect power levels may still allow users to enable encryption which will allow 3p users on other servers belonging to federation to freely use e2ee. This will create a divergence in room state and users on the server where this plugin is enabled won't be able to read encrypted messages - from their point of view the room will still be unencrypted.
+
+* The `patch_power_levels` option may be incompatible with certain servers because power levels higher than 100 are not documented in the Matrix spec.
