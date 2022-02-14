@@ -16,7 +16,7 @@ Plugin will strip away encryption from newly created rooms.
 
 If `patch_power_levels` option is set to `True` the plugin will additionally patch the `m.room.power_levels` event 
 and set the required power level for enabling encryption to 150 which is higher than the room creator level (100), 
-effectively preventing anybody from enabling the encryption. 
+effectively preventing anybody (locally or over federation) from enabling encryption for the lifetime of rooms created this way (irreversible).
 
 In addition the plugin will filter out events for enabling encryption on room based on the server:
   - deny_encryption_for_users_of: if the event sender is on the server in the list (i.e. @user:example.org)
