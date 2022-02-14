@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 #     matrix_e2ee_filter:
 #         level: INFO
 
-def __patch_room_power_levels(room_power_levels, requester_user_id):
+def _patch_room_power_levels(room_power_levels, requester_user_id):
     DEFAULT_EVENT_ACL = {
         'm.room.name': 50,
         'm.room.power_levels': 100,
@@ -137,7 +137,7 @@ class EncryptedRoomFilter:
         # we need to mimic the server defaults. Defaults takes from here:
         # https://github.com/matrix-org/synapse/blob/develop/synapse/handlers/room.py#L1015-L1035
         if self.patch_power_levels:
-            initial_power_levels = __patch_room_power_levels(initial_power_levels, requester.user.to_string())
+            initial_power_levels = _patch_room_power_levels(initial_power_levels, requester.user.to_string())
 
         # Inject back the power level structure
         if initial_power_levels:
