@@ -90,7 +90,7 @@ class EncryptedRoomFilter:
         logger.info('Deny lists: users of %s; rooms of %s', self.deny_user_servers, self.deny_room_servers)
 
 
-    async def check_event_for_spam(self, event: "synapse.events.EventBase") -> Union[bool, str]:
+    async def check_event_for_spam(self, event: "synapse.events.EventBase") -> Union["synapse.module_api.NOT_SPAM", "synapse.module_api.errors.Codes"]:
         # This is probably unnecessary if m.room.power_levels are set correctly
         # Let's keep it just in case
         event_dict = event.get_dict()
@@ -102,14 +102,14 @@ class EncryptedRoomFilter:
 
                 if user_server in self.deny_user_servers:
                     logger.warn('Denied E2EE for %s / requestor', event_dict.get('room_id', '<unknown>'))
-                    return 'Encryption is not allowed'
+                    return synapse.module_api.errors.Codes.FORBIDDEN
                 elif room_server in self.deny_room_servers:
                     logger.warn('Denied E2EE for %s / room server', event_dict.get('room_id', '<unknown>'))
-                    return 'Encryption is not allowed'
+                    return synapse.module_api.errors.Codes.FORBIDDEN
         except Exception:
             logger.warn('Exception when trying to handle the event: %s', event_dict)
-            return 'Denied because an error occurred when processing the request'
-        return False
+            return synapse.module_api.errors.Codes.FORBIDDEN
+        return synapse.module_api.NOT_SPAM
 
 
     async def on_create_room(self, requester: "synapse.types.Requester", request_content: dict, is_requester_admin: bool,) -> None:
